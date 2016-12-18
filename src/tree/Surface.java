@@ -29,7 +29,7 @@ public class Surface extends JPanel implements MouseListener {
   private void addTree() {
     Branch root = new Branch(WIDTH / 2, HEIGHT, WIDTH / 2, HEIGHT - 125);
     tree.add(root);
-    for (int i = 0; i < 10; i++) {
+    for (int i = 0; i < 11; i++) {
       addLayer();
     }
   }
@@ -55,7 +55,7 @@ public class Surface extends JPanel implements MouseListener {
     g2d.setColor(Color.GRAY);
     g2d.fillRect(0, 0, WIDTH, HEIGHT);
     g2d.setColor(Color.WHITE);
-    g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+    g2d.setStroke(new BasicStroke(2, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
     for (Branch b : tree) {
       g2d.draw(b.getLine());
     }
