@@ -34,7 +34,7 @@ public class Surface extends JPanel {
     g2d.setColor(Color.GRAY);
     g2d.fillRect(0, 0, WIDTH, HEIGHT);
     g2d.setColor(Color.WHITE);
-    g2d.setStroke(new BasicStroke(5, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
+    g2d.setStroke(new BasicStroke(3, BasicStroke.CAP_ROUND, BasicStroke.JOIN_MITER));
     for(Branch b : tree) {
       g2d.draw(b.getLine());
     }
