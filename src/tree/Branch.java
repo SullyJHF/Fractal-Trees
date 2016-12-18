@@ -29,6 +29,12 @@ public class Branch {
     return angle;
   }
 
+  private float randDecrease() {
+    float change = r.nextFloat() / 5.0f + 0.9f;
+    float decrease = this.decreaseBy * change;
+    return decrease;
+  }
+
   public Branch(int x1, int y1, int x2, int y2) {
     this(new Point(x1, y1), new Point(x2, y2));
   }
@@ -60,8 +66,8 @@ public class Branch {
 
   public Branch branchOff(boolean right) {
     Point dir = new Point(
-        (int) (Math.cos(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * decreaseBy),
-        (int) (Math.sin(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * decreaseBy));
+        (int) (Math.cos(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * randDecrease()),
+        (int) (Math.sin(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * randDecrease()));
     int x2 = this.end.x + dir.x;
     int y2 = this.end.y + dir.y;
     this.branches += 1;
