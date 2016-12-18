@@ -6,26 +6,26 @@ import java.awt.geom.Line2D;
 import java.util.Random;
 
 public class Branch {
-  private float decreaseBy = 0.67f;
+  private float decreaseBy = 0.8f;
   private float angleChange = 30;
   private float angle;
+  private float length;
   private Random r;
   private Point begin, end;
-  public boolean finished = false;
+  public int branches;
 
   public Branch(Point begin, Point end) {
     this.r = new Random();
     this.begin = begin;
     this.end = end;
     this.angle = getAngle();
+    this.length = getLength();
+    this.branches = 0;
   }
 
-  private float getAngle() {
-    System.out.println("(" + begin.x + ", " + begin.y + ") (" + end.x + ", " + end.y + ")");
-    float angle = (float) Math.toDegrees(Math.atan2(end.y - begin.y, end.x - begin.x));
-//    angle += 90;
-    if(angle < 0) angle += 360;
-    System.out.println(angle);
+  private float randAngle() {
+    float change = r.nextFloat() + 0.5f;
+    float angle = this.angleChange * change;
     return angle;
   }
 
@@ -33,17 +33,38 @@ public class Branch {
     this(new Point(x1, y1), new Point(x2, y2));
   }
 
+  private float getAngle() {
+    //    System.out.println("(" + begin.x + ", " + begin.y + ") (" + end.x + ", " + end.y + ")");
+    float angle = (float) Math.toDegrees(Math.atan2(end.y - begin.y, end.x - begin.x));
+    //    angle += 90;
+    if (angle < 0) angle += 360;
+    //    System.out.println(angle);
+    return angle;
+  }
+
+  private float getLength() {
+    //    System.out.println("(" + begin.x + ", " + begin.y + ") (" + end.x + ", " + end.y + ")");
+    //    System.out.println(end.x - begin.x);
+    int x = Math.abs(end.x - begin.x);
+    int y = Math.abs(end.y - begin.y);
+    return (float) Math.sqrt(x * x + y * y);
+  }
+
   public Branch branchRight() {
-    int x2 = this.end.x + (int) (Math.cos(Math.toRadians(angle + angleChange)) * 60.0);
-    int y2 = this.end.y + (int) (Math.sin(Math.toRadians(angle + angleChange)) * 60.0);
-    this.finished = true;
-    return new Branch(this.end.x, this.end.y, x2, y2);
+    return branchOff(true);
   }
 
   public Branch branchLeft() {
-    int x2 = this.end.x + (int) (Math.cos(Math.toRadians(angle - angleChange)) * 60.0);
-    int y2 = this.end.y + (int) (Math.sin(Math.toRadians(angle - angleChange)) * 60.0);
-    this.finished = true;
+    return branchOff(false);
+  }
+
+  public Branch branchOff(boolean right) {
+    Point dir = new Point(
+        (int) (Math.cos(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * decreaseBy),
+        (int) (Math.sin(Math.toRadians(angle + (right ? randAngle() : -randAngle()))) * length * decreaseBy));
+    int x2 = this.end.x + dir.x;
+    int y2 = this.end.y + dir.y;
+    this.branches += 1;
     return new Branch(this.end.x, this.end.y, x2, y2);
   }
 

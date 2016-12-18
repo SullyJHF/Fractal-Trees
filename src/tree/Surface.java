@@ -20,15 +20,10 @@ public class Surface extends JPanel {
   public Surface() {
     setPreferredSize(new Dimension(WIDTH, HEIGHT));
     tree = new ArrayList<Branch>();
-    Branch root = new Branch(WIDTH / 2, HEIGHT, WIDTH / 2, HEIGHT - 100);
+    Branch root = new Branch(WIDTH / 2, HEIGHT, WIDTH / 2, HEIGHT - 125);
     tree.add(root);
-    tree.add(root.branchRight());
-    tree.add(root.branchLeft());
-    int count = 0;
-    for(int i = 0; i < 31; i++) {
-      if(tree.get(i).finished) continue;
-      tree.add(tree.get(i).branchRight());
-      tree.add(tree.get(i).branchLeft());
+    for(int i = 0; i < 10; i++) {
+      addLayer();
     }
   }
 
@@ -53,5 +48,13 @@ public class Surface extends JPanel {
 
   public void render() {
     paintImmediately(new Rectangle(0, 0, WIDTH, HEIGHT));
+  }
+
+  public void addLayer() {
+    for(int i = tree.size() - 1; i >= 0; i--) {
+      if(tree.get(i).branches >= 2) continue;
+      tree.add(tree.get(i).branchRight());
+      tree.add(tree.get(i).branchLeft());
+    }
   }
 }
